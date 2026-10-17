@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Entity : MonoBehaviour
 {
+    public PlayerControl playerControl;
     public int ID;
     public int Color;
     // Start is called before the first frame update
