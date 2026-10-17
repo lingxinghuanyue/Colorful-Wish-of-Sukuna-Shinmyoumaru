@@ -1,21 +1,13 @@
-using System.Collections;
-using System.Collections.Generic;
+
 using UnityEngine;
 
 public class Entity : MonoBehaviour
 {
-    public PlayerControl playerControl;
     public int ID;
     public int Color;
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    public int PersonaID;
+    public int Face;
+    public string[] text;
+    public int textID;
+    public int[] Wish;  
 }

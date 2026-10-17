@@ -1,15 +1,12 @@
-using System.Collections;
-using System.Collections.Generic;
+
 using UnityEngine;
 using UnityEngine.UI;
-using static System.TimeZoneInfo;
 
 public class Line : MonoBehaviour
 {
     public PlayerControl playerControl;
     public bool Updated;
     public int Steps;
-    public bool Confirm;
     public GameObject[] Interface = new GameObject[4]; 
     public GameObject[] FourCorners = new GameObject[4];
     public int[] Color = new int[4];
@@ -22,14 +19,15 @@ public class Line : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        playerControl = transform.parent.parent.parent.GetComponent<PlayerControl>();
+        playerControl = transform.parent.parent.parent.parent.GetComponent<PlayerControl>();
+        Steps = playerControl.Steps;
     }
 
     // Update is called once per frame
     void Update()
     {
         Updated = false;
-        if (CenterColor == 0)
+        if (CenterColor == 8)
         {
             if (ColoredStatus == 0)
             {
@@ -67,8 +65,9 @@ public class Line : MonoBehaviour
                 if (Color[i] == 0) FourCorners[i].GetComponent<RawImage>().color = Center.GetComponent<RawImage>().color;
             }
         }
+        if (!playerControl.PullCord&& Steps> playerControl.Steps)Destroy(gameObject);        
     }
-    public void Show()
+    public void Achieve()
     {
         if (Updated) return;
         Updated = true;
@@ -130,7 +129,7 @@ public class Line : MonoBehaviour
         if ((r && y && b) || (a && r) || (a && y) || (a && b))
         {
             Center.GetComponent<RawImage>().color = new Color(1,0,0);
-            CenterColor = 0;
+            CenterColor = 8;
         }
         else if (y && b) CenterColor = 4;
         else if (r && b) CenterColor = 7;
@@ -154,25 +153,57 @@ public class Line : MonoBehaviour
         FourCorners[1].transform.eulerAngles = new(0, 0, !Access[1] ? -90 : 90);
         FourCorners[2].transform.eulerAngles = new(0, 0, Access[2] ? 0 : 180);
         FourCorners[3].transform.eulerAngles = new(0, 0, !Access[3] ? 0 : 180);
-        if (Interface[0] != null&& Interface[0].GetComponent<Line>() && !Access[0])
+        if (Interface[0] != null&& !Access[0])
         {
-            Interface[0].GetComponent<Line>().Color[1] = Color[0];
-            Interface[0].GetComponent<Line>().Show();
+            if (Interface[0].GetComponent<Persona>())
+            {
+                Interface[0].GetComponent<Persona>().Interface[1] = Color[0];
+                Interface[0].GetComponent<Persona>().Achieve();
+            }
+            if (Interface[0].GetComponent<Line>())
+            {
+                Interface[0].GetComponent<Line>().Color[1] = Color[0];
+                Interface[0].GetComponent<Line>().Achieve();
+            }
         }
-        if (Interface[1] != null && Interface[1].GetComponent<Line>() && !Access[1])
+        if (Interface[1] != null && !Access[1])
         {
-            Interface[1].GetComponent<Line>().Color[0] = Color[1];
-            Interface[1].GetComponent<Line>().Show();
+            if (Interface[1].GetComponent<Persona>())
+            {
+                Interface[1].GetComponent<Persona>().Interface[0] = Color[1];
+                Interface[1].GetComponent<Persona>().Achieve();
+            }
+            if (Interface[1].GetComponent<Line>())
+            {
+                Interface[1].GetComponent<Line>().Color[0] = Color[1];
+                Interface[1].GetComponent<Line>().Achieve();
+            }
         }
-        if (Interface[2] != null && Interface[2].GetComponent<Line>() && !Access[2])
+        if (Interface[2] != null && !Access[2])
         {
-            Interface[2].GetComponent<Line>().Color[3] = Color[2];
-            Interface[2].GetComponent<Line>().Show();
+            if (Interface[2].GetComponent<Persona>())
+            {
+                Interface[2].GetComponent<Persona>().Interface[3] = Color[2];
+                Interface[2].GetComponent<Persona>().Achieve();
+            }
+            if (Interface[2].GetComponent<Line>())
+            {
+                Interface[2].GetComponent<Line>().Color[3] = Color[2];
+                Interface[2].GetComponent<Line>().Achieve();
+            }
         }
-        if (Interface[3] != null && Interface[3].GetComponent<Line>() && !Access[3])
+        if (Interface[3] != null && !Access[3])
         {
-            Interface[3].GetComponent<Line>().Color[2] = Color[3];
-            Interface[3].GetComponent<Line>().Show();
+            if (Interface[3].GetComponent<Persona>())
+            {
+                Interface[3].GetComponent<Persona>().Interface[2] = Color[3];
+                Interface[3].GetComponent<Persona>().Achieve();
+            }
+            if (Interface[3].GetComponent<Line>())
+            {
+                Interface[3].GetComponent<Line>().Color[2] = Color[3];
+                Interface[3].GetComponent<Line>().Achieve();
+            }
         }
         if (((!Access[2] && Access[3])||(Access[2]&&!Access[3])) && (Interface[0] == null&& Interface[1] == null&& Interface[2] != null && Interface[3] != null))
         {
